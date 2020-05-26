@@ -115,6 +115,11 @@ textarea {
   font-size: 11px;
 }
 
+.btn-info{
+  background-color: #20BEB8;
+  border: 2px solid #20BEB8;
+}
+
 @media (max-width: 700px) {
   .content {
   flex-direction: column;

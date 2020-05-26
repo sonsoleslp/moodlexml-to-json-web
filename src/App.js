@@ -30,19 +30,77 @@ class App extends Component {
           </div>
         </header>
        <div className="content"> 
+        
           <div className="content-col left">
-            <div><h2>From</h2>
-            <select onChange={(e)=>{this.setState({from: e.target.value})}} value={this.state.from}>
-              <option value="xml" >MoodleXML</option>
-              <option value="txt" >Aiken</option>
-              {/* <option disabled value="json" >JSON</option> */}
-            </select>
-            {this.state.from === "txt"? <label className="lc"><input type="checkbox" checked={this.state.es} onChange={()=>this.setState({es: !this.state.es})}/>Spanish</label>: null}
-            {this.state.from === "txt"? <label className="lc"><input type="checkbox" checked={this.state.nsnc} onChange={()=>this.setState({nsnc: !this.state.nsnc})}/>Empty option</label>: null}
-            {this.state.from === "txt"? <label className="lc"><input type="checkbox" checked={this.state.penalty} onChange={()=>this.setState({penalty: !this.state.penalty})}/>Proportional penalty</label>: null}
-            {this.state.from === "txt"? <label className="lc"><input type="checkbox" checked={this.state.shuffle} onChange={()=>this.setState({shuffle: !this.state.shuffle})}/>Shuffle</label>: null}
-            
-            </div>
+            <ul className="list-group list-group-horizontal">
+
+              <div className="col-md-6 my-auto"> 
+                <h2>From</h2>
+                <select onChange={(e)=>{this.setState({from: e.target.value})}} value={this.state.from}>
+                  <option value="xml" >MoodleXML</option>
+                  <option value="txt" >Aiken</option>
+                  {/* <option disabled value="json" >JSON</option> */}
+                </select>
+              </div>
+              <div className="col-md-6 my-auto"> 
+              {this.state.from === "txt" ? <div className="dropdown text-center">
+                  <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Settings
+                  </button>
+                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <ul className="list-group list-group-horizontal ml-1 mr-1">
+                              <div className="my-auto">
+                                <input type="checkbox" checked={this.state.es} onChange={()=>this.setState({es: !this.state.es})}/>
+                              </div>
+                              <div>
+                                <label className="lc">Spanish</label>
+                              </div>
+                            </ul>
+                          </td>
+                          <td>
+                            <ul className="list-group list-group-horizontal ml-1 mr-1">
+                              <div className="my-auto">
+                                <input type="checkbox" checked={this.state.nsnc} onChange={()=>this.setState({nsnc: !this.state.nsnc})}/>
+                              </div>
+                              <div>
+                                <label className="lc">Empty option</label>
+                              </div>
+                            </ul>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <ul className="list-group list-group-horizontal ml-1 mr-1">
+                              <div className="my-auto">
+                                <input type="checkbox" checked={this.state.penalty} onChange={()=>this.setState({penalty: !this.state.penalty})}/>
+                              </div>
+                              <div>
+                                <label className="lc">Proportional penalty</label>
+                              </div>
+                            </ul>
+                          </td>
+                          <td>
+                            <ul className="list-group list-group-horizontal ml-1 mr-1">
+                              <div className="my-auto">
+                                <input type="checkbox" checked={this.state.shuffle} onChange={()=>this.setState({shuffle: !this.state.shuffle})}/>
+                              </div>
+                              <div>
+                                <label className="lc">Shuffle</label>
+                              </div>
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                  </div>
+                </div>: null}
+              </div>
+            </ul>
+
             <textarea onChange={(e)=>{this.onWrite(e,'left')}} value={this.state.left}></textarea>
             <div className="buttons">
               <button onClick={this.convert.bind(this)}>
