@@ -5,6 +5,7 @@
     "aiken-to-moodlexml": "^1.3.4",
     "moodlexml-to-json": "^1.1.1",
     "react": "^16.6.3",
+    "react-bootstrap": "^1.0.1",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1"
   },

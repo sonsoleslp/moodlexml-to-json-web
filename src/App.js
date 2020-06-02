@@ -2,24 +2,53 @@ import React, { Component } from 'react';
 import './App.css';
 import moodleXMLtoJson from 'moodlexml-to-json';
 import aikenToMoodleXML from 'aiken-to-moodlexml';
-//import sampleAiken from './sampleAiken';
+import sampleAiken from './sampleAiken';
 // import * as Moodle from './moodle';
+
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      left: "",
+      left: sampleAiken,
       right :"",
       from: 'txt',
       to: 'xml',
       es: false,
       nsnc: false,
       penalty: false,
-      shuffle: false
+      shuffle: false,
+      matchingToMultiple: false,
     }
   }
+
+  
   render() {
+
+    this.matchingAikenToMultipleMoodleXML()
+
+    const SpanishTooltip = props => (
+      <Tooltip {...props}>Spanish description</Tooltip>
+    );
+
+    const EmptyOptionTooltip = props => (
+      <Tooltip {...props}>Empty option description</Tooltip>
+    );
+
+    const ProportionalPenaltyTooltip = props => (
+      <Tooltip {...props}>Proportional penalty description</Tooltip>
+    );
+
+    const ShuffleTooltip = props => (
+      <Tooltip {...props}>Shuffle description</Tooltip>
+    );
+
+    const MatchingToMultipleChoiceTooltip = props => (
+      <Tooltip {...props}>Transform matching question to multiple choice</Tooltip>
+    );
+
     return (
       <div className="App">
         <header>
@@ -32,7 +61,7 @@ class App extends Component {
        <div className="content"> 
         
           <div className="content-col left">
-            <ul className="list-group list-group-horizontal">
+            <ul className="list-group list-group-horizontal mb-2 mt-2">
 
               <div className="col-md-4 my-auto"> 
                 <h2>From</h2>
@@ -42,59 +71,61 @@ class App extends Component {
                   {/* <option disabled value="json" >JSON</option> */}
                 </select>
               </div>
-              <div className="col-md-4 my-auto"> 
-                <button className="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  New Question
-                </button>
-                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "multichoice")} type="button" class="btn btn-link">multichoice</button>
-                          </td>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "essay")} type="button" class="btn btn-link">essay</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "shortanswer")} type="button" class="btn btn-link">shortanswer</button>
-                          </td>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "truefalse")} type="button" class="btn btn-link">truefalse</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "description")} type="button" class="btn btn-link">description</button>
-                          </td>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "cloze")} type="button" class="btn btn-link">cloze</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "numerical")} type="button" class="btn btn-link">numerical</button>
-                          </td>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "order")} type="button" class="btn btn-link">order</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <button onClick={this.insertNewQuestion.bind(this, "matching")} type="button" class="btn btn-link">matching</button>
-                          </td>
-                          <td>
-                            
-                          </td>
-                        </tr>
-                      </tbody>
-                  </table>
+              <div className="col-md-4 my-auto">
+                <div className="text-center">
+                  <button className="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    New Question
+                  </button>
+                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "multichoice")} type="button" className="btn btn-link">multichoice</button>
+                            </td>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "essay")} type="button" className="btn btn-link">essay</button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "shortanswer")} type="button" className="btn btn-link">shortanswer</button>
+                            </td>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "truefalse")} type="button" className="btn btn-link">truefalse</button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "description")} type="button" className="btn btn-link">description</button>
+                            </td>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "cloze")} type="button" className="btn btn-link">cloze</button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "numerical")} type="button" className="btn btn-link">numerical</button>
+                            </td>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "order")} type="button" className="btn btn-link">order</button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <button onClick={this.insertNewQuestion.bind(this, "matching")} type="button" className="btn btn-link">matching</button>
+                            </td>
+                            <td>
+                              
+                            </td>
+                          </tr>
+                        </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
               <div className="col-md-4 my-auto"> 
-              {this.state.from === "txt" ? <div className="dropdown text-center">
+              <div className="dropdown text-center">
                   <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Settings
                   </button>
@@ -108,7 +139,9 @@ class App extends Component {
                                 <input type="checkbox" checked={this.state.es} onChange={()=>this.setState({es: !this.state.es})}/>
                               </div>
                               <div>
-                                <label className="lc">Spanish</label>
+                                <OverlayTrigger placement="right" overlay={SpanishTooltip}>
+                                  <label className="lc">Spanish</label>
+                                </OverlayTrigger>
                               </div>
                             </ul>
                           </td>
@@ -118,7 +151,9 @@ class App extends Component {
                                 <input type="checkbox" checked={this.state.nsnc} onChange={()=>this.setState({nsnc: !this.state.nsnc})}/>
                               </div>
                               <div>
-                                <label className="lc">Empty option</label>
+                                <OverlayTrigger placement="right" overlay={EmptyOptionTooltip}>
+                                  <label className="lc">Empty option</label>
+                                </OverlayTrigger>
                               </div>
                             </ul>
                           </td>
@@ -130,7 +165,9 @@ class App extends Component {
                                 <input type="checkbox" checked={this.state.penalty} onChange={()=>this.setState({penalty: !this.state.penalty})}/>
                               </div>
                               <div>
-                                <label className="lc">Proportional penalty</label>
+                                <OverlayTrigger placement="right" overlay={ProportionalPenaltyTooltip}>
+                                  <label className="lc">Proportional penalty</label>
+                                </OverlayTrigger>
                               </div>
                             </ul>
                           </td>
@@ -140,7 +177,23 @@ class App extends Component {
                                 <input type="checkbox" checked={this.state.shuffle} onChange={()=>this.setState({shuffle: !this.state.shuffle})}/>
                               </div>
                               <div>
-                                <label className="lc">Shuffle</label>
+                                <OverlayTrigger placement="right" overlay={ShuffleTooltip}>
+                                  <label className="lc">Shuffle</label>
+                                </OverlayTrigger>
+                              </div>
+                            </ul>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <ul className="list-group list-group-horizontal ml-1 mr-1">
+                              <div className="my-auto">
+                                <input type="checkbox" checked={this.state.matchingToMultiple} onChange={()=>this.setState({matchingToMultiple: !this.state.matchingToMultiple})}/>
+                              </div>
+                              <div>
+                                <OverlayTrigger placement="right" overlay={MatchingToMultipleChoiceTooltip}>
+                                  <label className="lc">Matching to multiple choice</label>
+                                </OverlayTrigger>
                               </div>
                             </ul>
                           </td>
@@ -148,7 +201,7 @@ class App extends Component {
                       </tbody>
                   </table>
                   </div>
-                </div>: null}
+                </div>
               </div>
             </ul>
 
@@ -271,13 +324,61 @@ class App extends Component {
     // window.Moodle = Moodle;
   }
 
+  matchingAikenToMultipleMoodleXML(){
+const matching =  `
+matching
+X. Match cities and countries
+1. Yakutsk
+match: Russia
+2. Tampere
+match: Finland
+3. Harbin
+match: China
+Feedback: Good job!
+`
+
+    var m = matching.split("\n");
+    //console.log(m);
+
+    var cnt = 1;
+    for (var i = 0;i < m.length;i++){      
+      if(m[i].includes(cnt.toString()+'.')&&m[i+1].includes("match")){
+        console.log(m[i]);
+        cnt ++;
+      }
+    }
+    
+
+    var result = ''
+
+    result = result+"multichoice\n"
+    result = result+"X. "
+    
+    console.log(result);
+    
+  }
+
+  aikenToMoodle(aikenText){
+    var re = '';
+
+    aikenToMoodleXML(aikenText, (res, err) => {
+      if (err) {
+        console.error(err);
+        alert("Not a valid Aiken file");
+        return;
+      }
+        re = (res).replace(/\t/g, "  ");
+        
+    }, {lang: this.state.es ? "es": "en", penalty: this.state.penalty, nsnc: this.state.nsnc, shuffle: this.state.shuffle});
+
+    return re
+  }
+
   insertNewQuestion(type){
 
 const multichoice =  `
-
 multichoice
-X. When an organization decides to control the flow of incident information within the IT organization, 
-which ITIL process would it be putting in place?
+X. When an organization decides to control the flow of incident information within the IT organization, which ITIL process would it be putting in place?
 A. Availability Management
 B. Change Management
 C. Incident Management
@@ -286,46 +387,39 @@ Answer: C, D
 gfeed. Duh!
 `
 const essay =  `
-    
 essay
 X. The new role of social blogging in e-learning.
 gfeed. Write something about Twitter, Facebook from the aspects of teaching and colloboration.
 `
 const shortanswer =  `
-    
 shortanswer
 X. Calculate: 2 + 2 
 Answer: 4, four
 `
 
 const truefalse =  `
-    
 truefalse
 X. The founder of "Apple" was Steve Jobs.
 Answer: True
 Feedback: Steve Jobs is the CEO of Apple, which he co-founded in 1976.
 `
 const description =  `
-    
 description
 X. Open Office is the alternative to Microsoft Office.
 `
 
 const cloze =  `
-    
 cloze
 X. Infrastructure <{1:MULTICHOICE:=Monitoring~Controlling~Service} will provide support teams with alerts directly allowing for faster resolution. 
 Such alerts do not need to be recorded in the Incident Management tool as there is little added value in this {1:MULTICHOICE:=true~false}. 
 Typically the incident will be resolved automatically before the customer recognises it.
 `
 const numerical =  `
-    
 numerical
 X. How many books are in ITIL V3? Answer only with a number.
 Answer: 5, 7
 `
 const order =  `
-    
 order
 X. Place in ascending order
 1. 200
@@ -334,7 +428,6 @@ X. Place in ascending order
 ANSWER: 3,1,2
 `
 const matching =  `
-    
 matching
 X. Match cities and countries
 1. Yakutsk
@@ -348,31 +441,94 @@ Feedback: Good job!
 
     switch (type) {
       case "multichoice":
-        this.setState({left : this.state.left + multichoice})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + multichoice})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(multichoice)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       case "essay":
-        this.setState({left : this.state.left + essay})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + essay})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(essay)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       case "shortanswer":
-        this.setState({left : this.state.left + shortanswer})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + shortanswer})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(shortanswer)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       case "truefalse":
-        this.setState({left : this.state.left + truefalse})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + truefalse})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(truefalse)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       case "description":
-        this.setState({left : this.state.left + description})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + description})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(description)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       case "cloze":
-        this.setState({left : this.state.left + cloze})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + cloze})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(cloze)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       case "numerical":
-        this.setState({left : this.state.left + numerical})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + numerical})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(numerical)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       case "order":
-        this.setState({left : this.state.left + order})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + order})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(order)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       case "matching":
-        this.setState({left : this.state.left + matching})
+        if(this.state.from === "txt"){
+          this.setState({left : this.state.left + matching})
+        }else if(this.state.from === "xml"){
+          this.setState({left : this.state.left + this.aikenToMoodle(matching)})
+        }else{
+          console.log("Error not possible state");
+          
+        }
         break;
       default:
         console.log("Error with type", type);
@@ -380,6 +536,8 @@ Feedback: Good job!
     }
     
   }
+  
+  
 
 }
 
