@@ -345,8 +345,12 @@ class App extends Component {
     for (var i = 0;i<t.length;i++){
       if(write && t[i].includes("matching")){
         write = false
-      } else if (!write && (t[i].includes("matching") || t[i].includes("essay") || t[i].includes("shortanswer") || t[i].includes("truefalse") || t[i].includes("description") || t[i].includes("cloze") || t[i].includes("numerical") || t[i].includes("order") || t[i].includes("multichoice"))){
+      } else if (!write && (t[i].includes("essay") || t[i].includes("shortanswer") || t[i].includes("truefalse") || t[i].includes("description") || t[i].includes("cloze") || t[i].includes("numerical") || t[i].includes("order") || t[i].includes("multichoice"))){
         write = true
+        result = result + this.matchingAikenToMultipleMoodleXML(aux);        
+        aux = ''
+      }else if (!write && t[i].includes("matching")){
+        write = false
         result = result + this.matchingAikenToMultipleMoodleXML(aux);        
         aux = ''
       }else if (!write && i+1 === t.length){
