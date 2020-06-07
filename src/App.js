@@ -204,7 +204,7 @@ class App extends Component {
 
             <textarea onChange={(e)=>{this.onWrite(e,'left')}} value={this.state.left}></textarea>
             <div className="buttons">
-              <button className="btn btn-info" onClick={this.convert.bind(this)}>
+              <button className="btn btn-info" disabled={!this.state.left} onClick={this.convert.bind(this)}>
                 <i className="material-icons">play_arrow</i>Convert
               </button>
               <button className="btn btn-info" onClick={this.reset.bind(this)}>
@@ -225,13 +225,13 @@ class App extends Component {
             </div>
             <textarea ref="right" onChange={(e)=>{this.onWrite(e,'right')}} value={this.state.right}></textarea>
             <div className="buttons">
-              <button className="btn btn-info" onClick={()=>{
+              <button className="btn btn-info" disabled={!this.state.right}  onClick={()=>{
                 this.refs.right.select();
                 document.execCommand('copy');
               }}>
                 <i className="material-icons">file_copy</i>Copy
               </button>
-              <button className="btn btn-info" onClick={()=>{this.download("quiz."+this.state.to, this.state.right)}}>
+              <button className="btn btn-info" disabled={!this.state.right}  onClick={()=>{this.download("quiz."+this.state.to, this.state.right)}}>
                 <i className="material-icons">cloud_download</i>Download
               </button>
             </div>
@@ -244,7 +244,6 @@ class App extends Component {
 
   convert() {
     var {from, to, left} = this.state;
-      left = left.replace(/(\s*\n*)$/g,"").replace(/^(\s*\n*)/g,"");
     
     if (from === "xml" && to === "json") {
       moodleXMLtoJson(left, (res,err)=>{
@@ -324,16 +323,16 @@ class App extends Component {
 
   componentDidMount(){
     window.onbeforeunload = (e) => {
-      let {left, right, from, to, es, penalty, nsnc, shuffle} = this.state;
+      let {left, right, from, to, es, penalty, nsnc, shuffle, matchingToMultiple} = this.state;
       if (left === "") {
         localStorage.removeItem("moodleXMLtoJson");
       } else {
-        localStorage.moodleXMLtoJson = JSON.stringify({left, right, from, to, es, penalty, nsnc, shuffle});
+        localStorage.moodleXMLtoJson = JSON.stringify({left, right, from, to, es, penalty, nsnc, shuffle, matchingToMultiple});
       }
     };
     if (localStorage.moodleXMLtoJson) {
-      const {left, from, to, es, penalty, nsnc, shuffle} = JSON.parse(localStorage.moodleXMLtoJson);
-      this.setState({left, from, to, es, penalty, nsnc, shuffle});
+      const {left, from, to, es, penalty, nsnc, shuffle, matchingToMultiple} = JSON.parse(localStorage.moodleXMLtoJson);
+      this.setState({left, from, to, es, penalty, nsnc, shuffle, matchingToMultiple});
     }
     // window.Moodle = Moodle;
   }
@@ -376,7 +375,6 @@ class App extends Component {
     var answers = [];
     var feedback = "Good";
     for (var i = 0;i < m.length;i++){
-      console.log(m[i]);
       
       if (m[i].includes('#{option}')){
         question = m[i].split('#{option}');        
@@ -386,14 +384,10 @@ class App extends Component {
         answers.push(m[i+1].split('match: ')[1]);
         cnt ++;
       }else if(m[i].includes("Feedback:")){
-        console.log("aaaa");
-        
         feedback = m[i].split('Feedback: ')[1]
       }
     }
 
-    console.log(feedback);
-    
 
     var result = ''
 
@@ -404,7 +398,7 @@ class App extends Component {
         result = result+String.fromCodePoint(65+j)+". "+answers[j]+"\n"
       }
       result = result+"Answer: "+String.fromCodePoint(65+k)+"\n"
-      result = result+"Feedback: "+feedback+"\n\n"
+      result = result+"Feedback: " + feedback + "\n\n";
     }
     
     return result
@@ -501,7 +495,7 @@ Feedback: Good job!
 `;
 const matching2multiplechoice =  `
 matching
-In which country is #{option}
+In which country is #{option}?
 1. Yakutsk
 match: Russia
 2. Tampere
