@@ -2,7 +2,7 @@
   "name": "quiz-converter",
   "version": "0.1.0",
   "dependencies": {
-    "aiken-to-moodlexml": "^1.3.4",
+    "aiken-to-moodlexml": "^1.3.6",
     "moodlexml-to-json": "^1.1.1",
     "react": "^16.6.3",
     "react-bootstrap": "^1.0.1",

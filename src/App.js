@@ -7,7 +7,7 @@ import sampleAiken from './sampleAiken';
 
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-
+import DropdownButton from 'react-bootstrap/DropdownButton'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +27,7 @@ class App extends Component {
   
   render() {
     var opcion = "'#{option}'"
+
     const SpanishTooltip = props => (
       <Tooltip {...props}>Spanish description</Tooltip>
     );
@@ -62,78 +63,70 @@ class App extends Component {
        <div className="content"> 
         
           <div className="content-col left">
-            <ul className="list-group list-group-horizontal mb-2 mt-2">
-
-              <div className="col-md-4 my-auto"> 
-                <h2>From</h2>
-                <select onChange={(e)=>{this.setState({from: e.target.value})}} value={this.state.from}>
-                  <option value="xml" >MoodleXML</option>
-                  <option value="txt" >Aiken</option>
-                  {/* <option disabled value="json" >JSON</option> */}
-                </select>
-              </div>
-              <div className="col-md-4 my-auto">
-                <div className="text-center">
-                  <button className="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    New Question
-                  </button>
-                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <table>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "multichoice")} type="button" className="btn btn-link">multichoice</button>
-                            </td>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "essay")} type="button" className="btn btn-link">essay</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "shortanswer")} type="button" className="btn btn-link">shortanswer</button>
-                            </td>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "truefalse")} type="button" className="btn btn-link">truefalse</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "description")} type="button" className="btn btn-link">description</button>
-                            </td>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "cloze")} type="button" className="btn btn-link">cloze</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "numerical")} type="button" className="btn btn-link">numerical</button>
-                            </td>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "order")} type="button" className="btn btn-link">order</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <button onClick={this.insertNewQuestion.bind(this, "matching")} type="button" className="btn btn-link">matching</button>
-                            </td>
-                            <td>
-                              
-                            </td>
-                          </tr>
-                        </tbody>
-                    </table>
-                    <div className="text-center">
-                      <button onClick={this.insertNewQuestion.bind(this, "matching-to-multiplechoice")} type="button" className="btn btn-link">matching2multiplechoice</button>
-                    </div>
-                  </div>
+             <div className="top-form">
+                <div>   
+                  <h2>From</h2>
+                  <select className="form-control"  onChange={(e)=>{this.setState({from: e.target.value})}} value={this.state.from}>
+                    <option value="xml" >MoodleXML</option>
+                    <option value="txt" >Aiken</option>
+                    {/* <option disabled value="json" >JSON</option> */}
+                  </select>
                 </div>
-              </div>
-              <div className="col-md-4 my-auto"> 
-              <div className="dropdown text-center">
-                  <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Settings
-                  </button>
-                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div>
+                  <DropdownButton variant="outline-info"  id="questionsMenuButton" title="New Question">
+                     <table>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "multichoice")} type="button" className="btn btn-link">multichoice</button>
+                              </td>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "essay")} type="button" className="btn btn-link">essay</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "shortanswer")} type="button" className="btn btn-link">shortanswer</button>
+                              </td>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "truefalse")} type="button" className="btn btn-link">truefalse</button>
+                              </td>
+                            </tr>
+                          {/* <tr>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "description")} type="button" className="btn btn-link">description</button>
+                              </td>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "cloze")} type="button" className="btn btn-link">cloze</button>
+                              </td>
+                            </tr>*/}
+                            <tr>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "numerical")} type="button" className="btn btn-link">numerical</button>
+                              </td>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "order")} type="button" className="btn btn-link">order</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "matching")} type="button" className="btn btn-link">matching</button>
+                              </td>
+                              <td>
+                                
+                              </td>
+                            </tr>
+                            <tr>
+                              <button onClick={this.insertNewQuestion.bind(this, "matching2multiplechoice")} type="button" className="btn btn-link">matching2multiplechoice</button>
+
+                            </tr>
+                          </tbody>
+                    </table>
+                  </DropdownButton>
+                  <div className="dropdown-menu" aria-labelledby="questionsMenuButton">
+                   
+                  </div>
+                  <DropdownButton variant="outline-info"  id="settingsMenuButton" title="Settings">
                     <table>
                       <tbody>
                         <tr>
@@ -203,39 +196,42 @@ class App extends Component {
                           </td>
                         </tr>
                       </tbody>
-                  </table>
-                  </div>
+                    </table>
+                  </DropdownButton>
+
                 </div>
-              </div>
-            </ul>
+                </div>
 
             <textarea onChange={(e)=>{this.onWrite(e,'left')}} value={this.state.left}></textarea>
             <div className="buttons">
-              <button onClick={this.convert.bind(this)}>
+              <button className="btn btn-info" onClick={this.convert.bind(this)}>
                 <i className="material-icons">play_arrow</i>Convert
               </button>
-              <button onClick={this.reset.bind(this)}>
+              <button className="btn btn-info" onClick={this.reset.bind(this)}>
                 <i className="material-icons">replay</i>Reset
               </button>
             </div>
           </div>
           <div className="content-col right">
-            <div><h2>To</h2>
-            <select onChange={(e)=>{this.setState({to: e.target.value})}} value={this.state.to}>
-              <option value="xml" >MoodleXML</option>
-              <option value="txt" >Aiken</option>
-              <option value="json" >JSON</option>
-            </select>
+            <div className="top-form">
+              <div>
+                <h2>To</h2>
+                <select className="form-control" onChange={(e)=>{this.setState({to: e.target.value})}} value={this.state.to}>
+                  <option value="xml" >MoodleXML</option>
+                  <option value="txt" >Aiken</option>
+                  <option value="json" >JSON</option>
+                </select>
+              </div>
             </div>
             <textarea ref="right" onChange={(e)=>{this.onWrite(e,'right')}} value={this.state.right}></textarea>
             <div className="buttons">
-              <button onClick={()=>{
+              <button className="btn btn-info" onClick={()=>{
                 this.refs.right.select();
                 document.execCommand('copy');
               }}>
                 <i className="material-icons">file_copy</i>Copy
               </button>
-              <button onClick={()=>{this.download("quiz."+this.state.to, this.state.right)}}>
+              <button className="btn btn-info" onClick={()=>{this.download("quiz."+this.state.to, this.state.right)}}>
                 <i className="material-icons">cloud_download</i>Download
               </button>
             </div>
@@ -244,10 +240,12 @@ class App extends Component {
       </div>
     );
   }
+
+
   convert() {
     var {from, to, left} = this.state;
-    console.log(from, to, left)
-
+      left = left.replace(/(\s*\n*)$/g,"").replace(/^(\s*\n*)/g,"");
+    
     if (from === "xml" && to === "json") {
       moodleXMLtoJson(left, (res,err)=>{
         if (err) {
@@ -430,8 +428,9 @@ class App extends Component {
 
   insertNewQuestion(type){
 
-const multichoice =  `multichoice
-X. When an organization decides to control the flow of incident information within the IT organization, which ITIL process would it be putting in place?
+const multichoice =  `
+multichoice
+When an organization decides to control the flow of incident information within the IT organization, which ITIL process would it be putting in place?
 A. Availability Management
 B. Change Management
 C. Incident Management
@@ -440,49 +439,57 @@ Answer: C, D
 gfeed. Duh!
 
 `
-const essay =  `essay
-X. The new role of social blogging in e-learning.
+const essay =  `
+essay
+The new role of social blogging in e-learning.
 gfeed. Write something about Twitter, Facebook from the aspects of teaching and colloboration.
 
 `
-const shortanswer =  `shortanswer
-X. Calculate: 2 + 2 
+const shortanswer =  `
+shortanswer
+Calculate: 2 + 2 
 Answer: 4, four
 
 `
 
-const truefalse =  `truefalse
-X. The founder of "Apple" was Steve Jobs.
+const truefalse =  `
+truefalse
+The founder of "Apple" was Steve Jobs.
 Answer: True
 Feedback: Steve Jobs is the CEO of Apple, which he co-founded in 1976.
 
 `
-const description =  `description
-X. Open Office is the alternative to Microsoft Office.
+const description =  `
+description
+Open Office is the alternative to Microsoft Office.
 
 `
 
-const cloze =  `cloze
-X. Infrastructure <{1:MULTICHOICE:=Monitoring~Controlling~Service} will provide support teams with alerts directly allowing for faster resolution. 
+const cloze =  `
+cloze
+Infrastructure <{1:MULTICHOICE:=Monitoring~Controlling~Service} will provide support teams with alerts directly allowing for faster resolution. 
 Such alerts do not need to be recorded in the Incident Management tool as there is little added value in this {1:MULTICHOICE:=true~false}. 
 Typically the incident will be resolved automatically before the customer recognises it.
 
 `
-const numerical =  `numerical
-X. How many books are in ITIL V3? Answer only with a number.
+const numerical =  `
+numerical
+How many books are in ITIL V3? Answer only with a number.
 Answer: 5, 7
 
 `
-const order =  `order
-X. Place in ascending order
+const order =  `
+order
+Place in ascending order
 1. 200
 2. 500
 3. 100
 ANSWER: 3,1,2
 
 `
-const matching =  `matching
-X. Match cities and countries
+const matching =  `
+matching
+Match cities and countries
 1. Yakutsk
 match: Russia
 2. Tampere
@@ -491,9 +498,10 @@ match: Finland
 match: China
 Feedback: Good job!
 
-`
-const matching_to_multiplechoice =  `matching
-X. In which country is #{option}
+`;
+const matching2multiplechoice =  `
+matching
+In which country is #{option}
 1. Yakutsk
 match: Russia
 2. Tampere
@@ -502,108 +510,30 @@ match: Finland
 match: China
 Feedback: Good job!
 
-`
-
-    switch (type) {
-      case "multichoice":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + multichoice})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(multichoice)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-      case "essay":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + essay})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(essay)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-      case "shortanswer":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + shortanswer})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(shortanswer)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-      case "truefalse":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + truefalse})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(truefalse)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-      case "description":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + description})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(description)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-      case "cloze":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + cloze})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(cloze)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-      case "numerical":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + numerical})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(numerical)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-      case "order":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + order})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(order)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-      case "matching":
-        if(this.state.from === "txt"){
-          this.setState({left : this.state.left + matching})
-        }else if(this.state.from === "xml"){
-          this.setState({left : this.state.left + this.aikenToMoodle(matching)})
-        }else{
-          console.log("Error not possible state");
-        }
-        break;
-        case "matching-to-multiplechoice":
-          if(this.state.from === "txt"){
-            this.setState({left : this.state.left + matching_to_multiplechoice})
-          }else if(this.state.from === "xml"){
-            this.setState({left : this.state.left + this.aikenToMoodle(matching_to_multiplechoice)})
-          }else{
-            console.log("Error not possible state");
-          }
-          break;
-      default:
-        console.log("Error with type", type);
-        break;
+`;
+    const types = {
+      multichoice,
+      essay,
+      shortanswer,
+      truefalse,
+      description,
+      cloze,
+      numerical,
+      order,
+      matching,
+      matching2multiplechoice,
+    };
+    console.log(type)
+    if(this.state.from === "txt"){
+      this.setState({left : this.state.left + types[type]})
+    }else if(this.state.from === "xml"){
+      this.setState({left : this.state.left + this.aikenToMoodle(types[type])})
+    }else{
+      console.log("Error: not possible state");
     }
-    
+
   }
   
-  
-
 }
 
 export default App;

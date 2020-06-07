@@ -1,3 +1,7 @@
+
+:root {
+  --info: #20BEB8;
+}
 .App {
   display: flex;
   flex-direction: column;
@@ -40,12 +44,7 @@ h2 {
   margin-right: 10px
 }
 
-select {
-  font-size: 18px;
-  vertical-align: baseline;
-  padding: 3px;
-  outline: none;
-}
+ 
 .content {
   display: flex;
   flex-direction: row;
@@ -76,7 +75,7 @@ textarea {
   flex:1;
   background-color: #fafafa;
   /*border:none;*/
-  border-radius: 0px;
+  border-radius: 5px;
   outline: none !important;
   padding: 10px;
 }
@@ -84,25 +83,22 @@ textarea {
   height: 60px;
 }
 
-.buttons button {
-  margin-top: 10px;
-  padding: 3px 20px 3px 20px;
-  font-size: 20px;
-  margin-right: 10px;
-  background-color: #20BEB8;
-  border: 2px solid #20BEB8;
-  color: white;
-  /*font-weight: bold;*/
-  cursor: pointer;
-  height: 42px;
-  font-family: 'Roboto';
-  outline: none;
-
-}
-.buttons button:hover i {
+ 
+.btn:hover i {
   transform: scale(1.5);
 }
-.buttons button i {
+
+.btn {
+  margin-right: 10px;
+}
+.buttons .btn {
+    margin-top: 10px;
+}
+
+.btn-link {
+  color: var(--info);
+}
+.btn i {
   vertical-align: middle;
   font-size: 20px;
   margin-right: 10px;
@@ -112,12 +108,14 @@ textarea {
 
 .lc {
   padding-left: 10px;
-  font-size: 11px;
 }
+ 
 
-.btn-info{
-  background-color: #20BEB8;
-  border: 2px solid #20BEB8;
+select.form-control {
+  width:120px;
+  display: inline-block;
+  vertical-align: middle;
+
 }
 
 @media (max-width: 700px) {
@@ -126,7 +124,7 @@ textarea {
 
   }
   .content-col {
-    width: calc(100% - 70px);
+    width: calc(100% - 0px);
     flex:1;
   }
   .left {
@@ -136,4 +134,26 @@ textarea {
   }
 
 }
+.top-form {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.content-col h2 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  font-size: 18px;
+  font-weight: bolder;
+}
+
+#settingsMenuButton{
+  margin-right: 0;
+}
+
+.dropdown {
+  display: inline-block;
+}
