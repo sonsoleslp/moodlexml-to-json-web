@@ -117,8 +117,12 @@ class App extends Component {
                               </td>
                             </tr>
                             <tr>
-                              <button onClick={this.insertNewQuestion.bind(this, "matching2multiplechoice")} type="button" className="btn btn-link">matching2multiplechoice</button>
-
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "matching2multiplechoice")} type="button" className="btn btn-link">matching2multiplechoice</button>
+                              </td>
+                              <td>
+                                <button onClick={this.insertNewQuestion.bind(this, "personalizedQuestionType")} type="button" className="btn btn-link">personalizedQuestionType</button>
+                              </td>
                             </tr>
                           </tbody>
                     </table>
@@ -343,20 +347,38 @@ class App extends Component {
     var write = true;
     var aux = '';
     for (var i = 0;i<t.length;i++){
-      if(write && t[i].includes("matching")){
+      if(write && (t[i].includes("matching") || t[i].includes("personalizedQuestionType"))){
         write = false
       } else if (!write && (t[i].includes("essay") || t[i].includes("shortanswer") || t[i].includes("truefalse") || t[i].includes("description") || t[i].includes("cloze") || t[i].includes("numerical") || t[i].includes("order") || t[i].includes("multichoice"))){
         write = true
-        result = result + this.matchingAikenToMultipleMoodleXML(aux);        
+        if(aux.includes("personalizedQuestionType")){
+          result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);
+        }else if(aux.includes("matching")){
+          result = result + this.matchingAikenToMultipleMoodleXML(aux);
+        }else{
+          console.log("Error: This case should not be possible");
+        } 
         aux = ''
-      }else if (!write && t[i].includes("matching")){
+      }else if (!write && (t[i].includes("matching") || t[i].includes("personalizedQuestionType"))){
         write = false
-        result = result + this.matchingAikenToMultipleMoodleXML(aux);        
+        if(aux.includes("personalizedQuestionType")){
+          result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);
+        }else if(aux.includes("matching")){
+          result = result + this.matchingAikenToMultipleMoodleXML(aux);
+        }else{
+          console.log("Error: This case should not be possible");
+        }    
         aux = ''
       }else if (!write && i+1 === t.length){
         aux = aux + t[i];
         write = false
-        result = result + this.matchingAikenToMultipleMoodleXML(aux);        
+        if(aux.includes("personalizedQuestionType")){
+          result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);
+        }else if(aux.includes("matching")){
+          result = result + this.matchingAikenToMultipleMoodleXML(aux);
+        }else{
+          console.log("Error: This case should not be possible");
+        }       
         aux = ''
       }
       if(write){
@@ -392,7 +414,6 @@ class App extends Component {
       }
     }
 
-
     var result = ''
 
     for ( var k = 0; k < options.length;k++){
@@ -402,6 +423,43 @@ class App extends Component {
         result = result+String.fromCodePoint(65+j)+". "+answers[j]+"\n"
       }
       result = result+"Answer: "+String.fromCodePoint(65+k)+"\n"
+      result = result+"Feedback: " + feedback + "\n\n";
+    }
+    
+    return result
+  }
+
+  matchingPersonalizedAikenToMultipleMoodleXML(matchingPersonalizedQuestion){
+    var m = matchingPersonalizedQuestion.split("\n");
+    
+    var cnt = 0;
+    var questions = [];
+    var options = [];
+    var answers = [];
+    var feedback = "Good";
+    for (var i = 0;i < m.length;i++){      
+      if(i+1 <= m.length && (m[i].includes('Q:') && m[i+1].includes('Answer:'))){        
+        questions.push(m[i].split('Q: ')[1]);
+        answers.push(m[i+1].split('Answer: ')[1]);
+      }else if(m[i].includes(String.fromCodePoint(65+cnt)+'. ')){    
+        console.log(m[i]);
+            
+        options.push(m[i].split(String.fromCodePoint(65+cnt)+'. ')[1]);
+        cnt ++;
+      }else if(m[i].includes("Feedback:")){
+        feedback = m[i].split('Feedback: ')[1]
+      }
+    }
+
+    var result = ''
+
+    for ( var k = 0; k < questions.length;k++){
+      result = result+"multichoice\n"
+      result = result+questions[k]+"\n";
+      for(var j = 0; j < options.length;j++){
+        result = result+String.fromCodePoint(65+j)+". "+options[j]+"\n"
+      }
+      result = result+"Answer: "+answers[k]+"\n"
       result = result+"Feedback: " + feedback + "\n\n";
     }
     
@@ -509,6 +567,24 @@ match: China
 Feedback: Good job!
 
 `;
+const personalizedQuestionType =  `
+personalizedQuestionType
+Q: In which country is Madrid?
+Answer: A
+Q: In which country is Barcelona?
+Answer: A
+Q: In which country is Sevilla?
+Answer: A
+Q: In which country is Paris?
+Answer: B
+Q: In which country is London?
+Answer: C
+A. Spain
+B. France
+C. United Kingdom
+Feedback: Good job!
+
+`;
     const types = {
       multichoice,
       essay,
@@ -520,6 +596,7 @@ Feedback: Good job!
       order,
       matching,
       matching2multiplechoice,
+      personalizedQuestionType,
     };
     console.log(type)
     if(this.state.from === "txt"){
