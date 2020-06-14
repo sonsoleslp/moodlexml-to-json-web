@@ -21,6 +21,7 @@ class App extends Component {
       penalty: false,
       shuffle: false,
       matchingToMultiple: false,
+      deleteCDATA:false,
     }
   }
 
@@ -48,6 +49,12 @@ class App extends Component {
       <Tooltip {...props}>
         <label>Transform matching question to multiple choice. It is necessary to include the text {opcion} for craeting the question properly</label>
         <span className="font-weight-bold">The input matching question must be in Aiken format</span>
+      </Tooltip>
+    );
+
+    const deleteCDATA = props => (
+      <Tooltip {...props}>
+        <label>Delete CDATA information from Moodle XML</label>
       </Tooltip>
     );
 
@@ -198,6 +205,18 @@ class App extends Component {
                               </div>
                             </ul>
                           </td>
+                          <td>
+                            <ul className="list-group list-group-horizontal ml-1 mr-1">
+                              <div className="my-auto">
+                                <input type="checkbox" checked={this.state.deleteCDATA} onChange={()=>this.setState({deleteCDATA: !this.state.deleteCDATA})}/>
+                              </div>
+                              <div>
+                                <OverlayTrigger placement="right" overlay={deleteCDATA}>
+                                  <label className="lc">delete CDATA</label>
+                                </OverlayTrigger>
+                              </div>
+                            </ul>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -291,12 +310,20 @@ class App extends Component {
           this.setState({right: ''});
           return;
         }
+        if (this.state.deleteCDATA){
+          res = this.cleanXMLfile(res)
+        }
           let right = (res)
           .replace(/\t/g, "  ");
           
           this.setState({right});
       }, {lang: this.state.es ? "es": "en", penalty: this.state.penalty, nsnc: this.state.nsnc, shuffle: this.state.shuffle});
     } else if (from === "xml" && to === "xml") {
+
+      if (this.state.deleteCDATA){
+        left = this.cleanXMLfile(left)
+      }
+
       this.setState({right: left});
     }else if (from === "txt" && to === "txt"){
 
@@ -345,6 +372,18 @@ class App extends Component {
     }
     // window.Moodle = Moodle;
   }
+
+  cleanXMLfile (string){    
+    var value = string.replace(/<!\[CDATA\[/g,'')
+    value = value.replace(/\[/g,"")
+    value = value.replace(/\]>/g,"")
+    value = value.replace(/\]/g,"")
+    value = value.replace(/<p>/g,"")
+    value = value.replace(/<\/p>/g,"")
+    value = value.replace(/<br>/g,"")
+    value = value.replace(/<\/br>/g,"")
+    return value
+}
 
   findPersonalizedQuestionsAndChange(questions){
     var t = questions.split("\n");    
