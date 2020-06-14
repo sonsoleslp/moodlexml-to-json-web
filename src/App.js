@@ -261,6 +261,7 @@ class App extends Component {
         this.setState({right});
       })
     } else if (from === "txt" && to === "json") {
+      left = this.findPersonalizedQuestionsAndChange(left);
       if(this.state.matchingToMultiple){
         left = this.findMatchigQuestionsAndChange(left);
       }
@@ -279,6 +280,7 @@ class App extends Component {
         })
       }, {lang: this.state.es ? "es": "en", penalty: this.state.penalty, nsnc: this.state.nsnc, shuffle: this.state.shuffle});
     } else if (from === "txt" && to === "xml") {
+      left = this.findPersonalizedQuestionsAndChange(left);
       if(this.state.matchingToMultiple){
         left = this.findMatchigQuestionsAndChange(left);
       }
@@ -297,6 +299,9 @@ class App extends Component {
     } else if (from === "xml" && to === "xml") {
       this.setState({right: left});
     }else if (from === "txt" && to === "txt"){
+
+      left = this.findPersonalizedQuestionsAndChange(left);
+
       if(this.state.matchingToMultiple){
         left = this.findMatchigQuestionsAndChange(left);
       }
@@ -341,44 +346,59 @@ class App extends Component {
     // window.Moodle = Moodle;
   }
 
+  findPersonalizedQuestionsAndChange(questions){
+    var t = questions.split("\n");    
+    var result = '';
+    var write = true;
+    var aux = '';
+    for (var i = 0;i<t.length;i++){
+      if(write && t[i].includes("personalizedQuestionType")){
+        write = false
+      } else if (!write && (t[i].includes("essay") || t[i].includes("shortanswer") || t[i].includes("truefalse") || t[i].includes("description") || t[i].includes("cloze") || t[i].includes("numerical") || t[i].includes("order") || t[i].includes("multichoice"))){
+        write = true
+        result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);
+        aux = ''
+      }else if (!write && t[i].includes("personalizedQuestionType")){
+        write = false
+        result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);   
+        aux = ''
+      }else if (!write && i+1 === t.length){
+        aux = aux + t[i];
+        write = false
+        result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);    
+        aux = ''
+      }
+      if(write){
+        result = result + t[i] + "\n";
+      }else{
+        aux = aux + t[i] +"\n";
+      }
+    }
+    console.log(result);
+    return result;
+    
+  }
+
   findMatchigQuestionsAndChange(questions){
     var t = questions.split("\n");    
     var result = '';
     var write = true;
     var aux = '';
     for (var i = 0;i<t.length;i++){
-      if(write && (t[i].includes("matching") || t[i].includes("personalizedQuestionType"))){
+      if(write && t[i].includes("matching")){
         write = false
       } else if (!write && (t[i].includes("essay") || t[i].includes("shortanswer") || t[i].includes("truefalse") || t[i].includes("description") || t[i].includes("cloze") || t[i].includes("numerical") || t[i].includes("order") || t[i].includes("multichoice"))){
         write = true
-        if(aux.includes("personalizedQuestionType")){
-          result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);
-        }else if(aux.includes("matching")){
-          result = result + this.matchingAikenToMultipleMoodleXML(aux);
-        }else{
-          console.log("Error: This case should not be possible");
-        } 
+        result = result + this.matchingAikenToMultipleMoodleXML(aux);
         aux = ''
-      }else if (!write && (t[i].includes("matching") || t[i].includes("personalizedQuestionType"))){
+      }else if (!write && t[i].includes("matching")){
         write = false
-        if(aux.includes("personalizedQuestionType")){
-          result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);
-        }else if(aux.includes("matching")){
-          result = result + this.matchingAikenToMultipleMoodleXML(aux);
-        }else{
-          console.log("Error: This case should not be possible");
-        }    
+        result = result + this.matchingAikenToMultipleMoodleXML(aux);  
         aux = ''
       }else if (!write && i+1 === t.length){
         aux = aux + t[i];
         write = false
-        if(aux.includes("personalizedQuestionType")){
-          result = result + this.matchingPersonalizedAikenToMultipleMoodleXML(aux);
-        }else if(aux.includes("matching")){
-          result = result + this.matchingAikenToMultipleMoodleXML(aux);
-        }else{
-          console.log("Error: This case should not be possible");
-        }       
+        result = result + this.matchingAikenToMultipleMoodleXML(aux);      
         aux = ''
       }
       if(write){
