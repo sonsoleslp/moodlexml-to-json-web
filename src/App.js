@@ -7,7 +7,7 @@ import sampleAiken from './sampleAiken';
 
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import DropdownButton from 'react-bootstrap/DropdownButton'
+import DropdownButton from 'react-bootstrap/DropdownButton';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -57,6 +57,20 @@ class App extends Component {
         <label>Delete CDATA information from Moodle XML</label>
       </Tooltip>
     );
+
+    let fileReader;
+    
+    const handleFileRead = (e) => {
+      const content = fileReader.result;
+      this.setState({left: content});
+      console.log(content);
+    }
+
+    const handleFileChosen = (file) => {
+      fileReader = new FileReader();
+      fileReader.onloadend = handleFileRead;
+      fileReader.readAsText(file);
+    }
 
     return (
       <div className="App">
@@ -233,6 +247,9 @@ class App extends Component {
               <button className="btn btn-info" onClick={this.reset.bind(this)}>
                 <i className="material-icons">replay</i>Reset
               </button>
+              <DropdownButton variant="btn btn-info" title="Upload Questions">
+                    <input className='mt-2 mb-2 mr-2 ml-2' type='file' id='file' accept='.xml,.txt' onChange={e =>handleFileChosen(e.target.files[0])}/>
+              </DropdownButton>
             </div>
           </div>
           <div className="content-col right">
